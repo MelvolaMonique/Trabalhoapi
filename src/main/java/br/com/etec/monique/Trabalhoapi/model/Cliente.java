@@ -1,6 +1,8 @@
 package br.com.etec.monique.Trabalhoapi.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +19,8 @@ public class Cliente {
     return id;
   }
 
+
+
   public void setId(Integer id) {
     this.id = id;
   }
@@ -28,6 +32,8 @@ public class Cliente {
   public void setNomecliente(String nomecliente) {
     this.nomecliente = nomecliente;
   }
+
+
 
   @Override
   public boolean equals(Object o) {
