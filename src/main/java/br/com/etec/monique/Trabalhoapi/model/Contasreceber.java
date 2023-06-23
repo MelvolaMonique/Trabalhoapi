@@ -6,22 +6,27 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name ="contaspagar")
-public class Contaspagar {
+@Table(name= "contrasreceber")
+public class Contasreceber {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
 
   private Integer id;
-
-  private Date data;
-
-  private Date Datavencimento;
-
+  private Date dataconta;
   private BigDecimal valor;
 
   @ManyToOne
   @JoinColumn( name ="idcliente")
   private Cliente cliente;
+
+  public Cliente getCliente() {
+    return cliente;
+  }
+
+  public void setCliente(Cliente cliente) {
+    this.cliente = cliente;
+  }
 
   public Integer getId() {
     return id;
@@ -31,20 +36,12 @@ public class Contaspagar {
     this.id = id;
   }
 
-  public Date getData() {
-    return data;
+  public Date getDataconta() {
+    return dataconta;
   }
 
-  public void setData(Date data) {
-    this.data = data;
-  }
-
-  public Date getDatavencimento() {
-    return Datavencimento;
-  }
-
-  public void setDatavencimento(Date datavencimento) {
-    Datavencimento = datavencimento;
+  public void setDataconta(Date dataconta) {
+    this.dataconta = dataconta;
   }
 
   public BigDecimal getValor() {
@@ -55,19 +52,11 @@ public class Contaspagar {
     this.valor = valor;
   }
 
-  public Cliente getCliente() {
-    return cliente;
-  }
-
-  public void setCliente(Cliente cliente) {
-    this.cliente = cliente;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Contaspagar that = (Contaspagar) o;
+    if (!(o instanceof Contasreceber)) return false;
+    Contasreceber that = (Contasreceber) o;
     return id.equals(that.id);
   }
 

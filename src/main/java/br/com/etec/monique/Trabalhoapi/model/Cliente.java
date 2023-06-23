@@ -1,5 +1,7 @@
 package br.com.etec.monique.Trabalhoapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,10 @@ public class Cliente {
   private Integer id;
 
   private String nomecliente;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "cliente")
+  private List<Contasreceber> contasrecebercliente = new ArrayList<>();
 
   public Integer getId() {
     return id;
@@ -33,7 +39,13 @@ public class Cliente {
     this.nomecliente = nomecliente;
   }
 
+  public List<Contasreceber> getContasrecebercliente() {
+    return contasrecebercliente;
+  }
 
+  public void setContasrecebercliente(List<Contasreceber> contasrecebercliente) {
+    this.contasrecebercliente = contasrecebercliente;
+  }
 
   @Override
   public boolean equals(Object o) {
