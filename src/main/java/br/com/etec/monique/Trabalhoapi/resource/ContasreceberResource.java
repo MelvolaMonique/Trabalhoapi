@@ -26,7 +26,7 @@ public class ContasreceberResource {
 
   @GetMapping()
   public Page<ContasreceberDto> pesquisar (ContasreceberFilter contasreceberFilter, Pageable pageable){
-    return contasreceberRepository.Filtrar(ContasreceberFilter, pageable);
+    return contasreceberRepository.Filtrar(contasreceberFilter, pageable);
   }
 
 }

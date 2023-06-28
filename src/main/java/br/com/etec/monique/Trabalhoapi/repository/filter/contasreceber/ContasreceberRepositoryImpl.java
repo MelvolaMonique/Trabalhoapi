@@ -49,12 +49,53 @@ public class ContasreceberRepositoryImpl implements ContasreceberRepositoryQuery
 
   }
 
+  private Long total(ContasreceberFilter contasreceberFilter) {
+
+    CriteriaBuilder builder = manager.getCriteriaBuilder();
+    CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+    Root<Contasreceber> root = criteria.from(Contasreceber.class);
+
+    Predicate[] predicates = criarRestricoes(contasreceberFilter, builder, root);
+    criteria.where(predicates);
+    criteria.orderBy(builder.asc(root.get("dataconta")));
+
+    criteria.select(builder.count(root));
+
+    return  manager.createQuery(criteria).getSingleResult();
+
+  }
+
+  private void adicionarRestricoesDePaginacao(TypedQuery<ContasreceberDto> query, Pageable pageable) {
+    int paginaAtual = pageable.getPageNumber();
+    int totalRegistrosPorPagina = pageable.getPageSize();
+    int primieroRegistroPagina = paginaAtual * totalRegistrosPorPagina;
+
+    query.setFirstResult(primieroRegistroPagina);
+    query.setMaxResults(totalRegistrosPorPagina);
+  }
+
   private Predicate[] criarRestricoes(ContasreceberFilter contasreceberFilter, CriteriaBuilder builder, Root<Contasreceber> root) {
     List<Predicate> predicates = new ArrayList<>();
 
-    if (contasreceberFilter.getDataconta() != null){
-      
+    if (!StringUtils.isEmpty(contasreceberFilter.getNomecliente())) {
+      predicates.add(builder.like(builder.lower(root.get("cliente").get("nomecliente")),
+        "%" + contasreceberFilter.getNomecliente().toLowerCase() + "%"));
     }
+    if (contasreceberFilter.getValor() != null) {
+      predicates.add(builder.greaterThanOrEqualTo(root.get("valor"), contasreceberFilter.getValor()));
+
+    }
+
+    if (contasreceberFilter.getDataconta() != null){
+      predicates.add(builder.greaterThanOrEqualTo(root.get("data"), contasreceberFilter.getDataconta())
+      );
+
+    }
+    if (contasreceberFilter.getDataconta() != null){
+      predicates.add(builder.lessThanOrEqualTo(root.get("dataconta"),contasreceberFilter.getDataconta())
+      );
+    }
+    return predicates.toArray(new Predicate[predicates.size()]);
   }
 
 
